@@ -201,11 +201,11 @@ function PropostaForm({ proposta, opcoes, onSave, onCancel, onDelete }) {
           Condições Adicionais e Observações
         </h3>
         <div>
-          <label className="label">Condições Adicionais</label>
-          <textarea className="input resize-none" rows={4}
+          <label className="label">Condições Adicionais <span className="text-canaa-muted font-normal normal-case tracking-normal">(cada linha vira um bullet no PDF)</span></label>
+          <textarea className="input resize-none" rows={5}
             value={form.condicoes_adicionais}
             onChange={e => set('condicoes_adicionais', e.target.value)}
-            placeholder="Descreva as condições específicas desta proposta..." />
+            placeholder={"Valor de R$ 2.000.000,00 (dois milhões de reais)\nPagamento à vista\n30 dias para desocupação"} />
         </div>
         <div>
           <label className="label">Observações Internas</label>

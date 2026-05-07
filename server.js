@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3002
 app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'dist')))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // ── Banco de dados ───────────────────────────────────────────────
 const db = new Database(path.join(__dirname, 'contratos.db'))
@@ -53,7 +54,7 @@ const seedOpcoes = (tipo, valores) => {
   const stmt = db.prepare('INSERT OR IGNORE INTO opcoes (tipo, valor) VALUES (?, ?)')
   valores.forEach(v => stmt.run(tipo, v))
 }
-seedOpcoes('empresa',  ['Canaã Yeshua Negócios Imobiliários'])
+seedOpcoes('empresa',  ['Canaã Luxo', 'Canaã Yatchs', 'Easy'])
 seedOpcoes('situacao', ['Enviada', 'Aceita', 'Recusada'])
 seedOpcoes('pagamento',['À vista', 'Financiamento bancário', 'Parcelado', 'Permuta', 'Outros'])
 
