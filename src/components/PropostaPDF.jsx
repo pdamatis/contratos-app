@@ -170,9 +170,6 @@ export function gerarPDF(p) {
 
     <div class="header">
       <img src="${logoUrl}" alt="${empresa}">
-      <div class="header-text">
-        ${empresa} <span>${logoSub}</span>
-      </div>
     </div>
     <hr class="sep">
 
