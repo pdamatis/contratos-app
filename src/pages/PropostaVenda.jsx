@@ -287,6 +287,67 @@ function PropostaCard({ p, onEdit, onPrint }) {
   )
 }
 
+/* ── Ranking por Corretor ────────────────────────────── */
+function RankingCorretores({ propostas }) {
+  const map = {}
+  propostas.forEach(p => {
+    const nome = (p.corretor || '').trim() || '—'
+    if (!map[nome]) map[nome] = { total: 0, aceitas: 0, recusadas: 0, enviadas: 0, volume: 0 }
+    map[nome].total++
+    if (p.situacao === 'Aceita')   { map[nome].aceitas++;   map[nome].volume += Number(p.valor_proposta) || 0 }
+    if (p.situacao === 'Recusada') map[nome].recusadas++
+    if (p.situacao === 'Enviada')  map[nome].enviadas++
+  })
+
+  const ranking = Object.entries(map)
+    .map(([nome, s]) => ({ nome, ...s }))
+    .sort((a, b) => b.aceitas - a.aceitas || b.volume - a.volume || b.total - a.total)
+
+  if (ranking.length === 0) return null
+
+  const medals = ['🥇', '🥈', '🥉']
+
+  return (
+    <div className="card p-5">
+      <h3 className="text-xs font-semibold text-canaa-wine uppercase tracking-widest border-b border-canaa-border pb-2 mb-4">
+        Ranking por Corretor
+      </h3>
+      <div className="space-y-2">
+        {ranking.map((c, i) => {
+          const pct = c.total > 0 ? Math.round((c.aceitas / c.total) * 100) : 0
+          return (
+            <div key={c.nome} className="flex items-center gap-3 py-2.5 px-3 rounded-lg bg-canaa-surface/50 hover:bg-canaa-surface transition">
+              {/* Posição */}
+              <div className="w-7 text-center text-base shrink-0">
+                {i < 3 ? medals[i] : <span className="text-canaa-muted text-sm font-mono">{i + 1}º</span>}
+              </div>
+              {/* Nome */}
+              <div className="flex-1 min-w-0">
+                <p className="text-white text-sm font-medium truncate">{c.nome}</p>
+                <div className="flex items-center gap-3 mt-1 text-[11px] text-canaa-muted flex-wrap">
+                  <span>{c.total} proposta{c.total !== 1 ? 's' : ''}</span>
+                  <span className="text-emerald-400">{c.aceitas} aceita{c.aceitas !== 1 ? 's' : ''}</span>
+                  {c.recusadas > 0 && <span className="text-red-400">{c.recusadas} recusada{c.recusadas !== 1 ? 's' : ''}</span>}
+                  {c.enviadas  > 0 && <span className="text-amber-400">{c.enviadas} em aberto</span>}
+                </div>
+              </div>
+              {/* Taxa de conversão */}
+              <div className="text-right shrink-0">
+                <p className="text-white text-sm font-semibold">
+                  {c.volume > 0
+                    ? c.volume.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+                    : '—'}
+                </p>
+                <p className="text-[11px] text-canaa-muted mt-0.5">{pct}% conv.</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 /* ── Página principal ─────────────────────────────────── */
 export default function PropostaVenda() {
   const [propostas, setPropostas] = useState([])
@@ -390,6 +451,9 @@ export default function PropostaVenda() {
           </div>
         ))}
       </div>
+
+      {/* Ranking */}
+      {!loading && propostas.length > 0 && <RankingCorretores propostas={propostas} />}
 
       {/* Filtros */}
       <div className="flex gap-2 flex-wrap">
