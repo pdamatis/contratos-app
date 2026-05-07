@@ -1,8 +1,16 @@
 import { useState } from 'react'
 import { FileText } from 'lucide-react'
 import PropostaVenda from './pages/PropostaVenda'
+import ContratoAluguel from './pages/ContratoAluguel'
+
+const SECOES = [
+  { id: 'propostas',  label: 'Propostas de Venda' },
+  { id: 'aluguel',    label: 'Contratos de Aluguel' },
+]
 
 export default function App() {
+  const [secao, setSecao] = useState('propostas')
+
   return (
     <div className="min-h-screen" style={{ background: '#0D0B0B' }}>
       {/* Header */}
@@ -18,9 +26,18 @@ export default function App() {
         </div>
         <div className="ml-4 h-5 w-px bg-canaa-border" />
         <nav className="flex gap-1">
-          <button className="px-4 py-1.5 rounded-lg text-sm bg-canaa-wine/15 text-canaa-wine border border-canaa-wine/30">
-            Propostas de Venda
-          </button>
+          {SECOES.map(s => (
+            <button
+              key={s.id}
+              onClick={() => setSecao(s.id)}
+              className={`px-4 py-1.5 rounded-lg text-sm transition ${
+                secao === s.id
+                  ? 'bg-canaa-wine/15 text-canaa-wine border border-canaa-wine/30'
+                  : 'text-canaa-muted hover:text-white hover:bg-canaa-surface border border-transparent'
+              }`}>
+              {s.label}
+            </button>
+          ))}
         </nav>
         <div className="ml-auto text-canaa-muted text-xs">
           Módulo Contratos · v1.0
@@ -29,7 +46,8 @@ export default function App() {
 
       {/* Conteúdo */}
       <main className="max-w-6xl mx-auto px-6 py-8">
-        <PropostaVenda />
+        {secao === 'propostas' && <PropostaVenda />}
+        {secao === 'aluguel'   && <ContratoAluguel />}
       </main>
     </div>
   )
