@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #0D0B0B;
+    color: #E8E0E0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+}
+
+@layer components {
+  .card {
+    @apply bg-canaa-card border border-canaa-border rounded-xl;
+  }
+  .input {
+    @apply w-full bg-canaa-surface border border-canaa-border rounded-lg px-3 py-2.5 text-sm text-white/90
+           placeholder-canaa-muted focus:outline-none focus:border-canaa-wine/60 focus:bg-black/20 transition;
+  }
+  .label {
+    @apply block text-[11px] uppercase tracking-widest text-canaa-muted mb-1.5;
+  }
+  .btn-primary {
+    @apply bg-canaa-wine hover:bg-canaa-wine2 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition;
+  }
+  .btn-ghost {
+    @apply border border-canaa-border hover:border-canaa-wine/40 text-canaa-light hover:text-white text-sm px-4 py-2.5 rounded-lg transition;
+  }
+  .btn-danger {
+    @apply bg-red-900/30 hover:bg-red-900/60 border border-red-800/40 text-red-400 text-sm px-4 py-2.5 rounded-lg transition;
+  }
+  .badge-enviada  { @apply text-xs px-2.5 py-1 rounded-full bg-amber-900/30 text-amber-400 border border-amber-800/30; }
+  .badge-aceita   { @apply text-xs px-2.5 py-1 rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-800/30; }
+  .badge-recusada { @apply text-xs px-2.5 py-1 rounded-full bg-red-900/30 text-red-400 border border-red-800/30; }
+}
+
+/* PDF print styles */
+@media print {
+  body { background: white !important; color: black !important; }
+  .no-print { display: none !important; }
+  .print-page { box-shadow: none !important; margin: 0 !important; padding: 24px !important; }
+}

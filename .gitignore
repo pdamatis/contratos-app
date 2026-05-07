@@ -1,0 +1,3 @@
+node_modules/
+contratos.db
+*.db-journal
