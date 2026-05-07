@@ -15,7 +15,13 @@ app.use(express.static(path.join(__dirname, 'dist')))
 app.use(express.static(path.join(__dirname, 'public')))
 
 // ── Banco de dados ───────────────────────────────────────────────
-const db = new Database(path.join(__dirname, 'contratos.db'))
+// Em produção usa o volume persistente /data, localmente usa o diretório do projeto
+const DB_PATH = process.env.RAILWAY_ENVIRONMENT
+  ? '/data/contratos.db'
+  : path.join(__dirname, 'contratos.db')
+
+fs.mkdirSync(path.dirname(DB_PATH), { recursive: true })
+const db = new Database(DB_PATH)
 db.pragma('journal_mode = WAL')
 
 db.exec(`
